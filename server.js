@@ -3,6 +3,7 @@ import express from "express";
 import connectDB from "./db/index.js";
 import User from "./models/user.js";
 import cors from "cors";
+import { Types } from "mongoose";
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,7 +23,8 @@ app.get("/table", async (req, res) => {
 
 app.post("/table", async (req, res) => {
     try {
-        const { userId, username, firstName, lastName, email, phone } = req.body;
+        const { username, firstName, lastName, email, phone } = req.body;
+        const userId = new Types.ObjectId();
         const newUser = new User({ userId, username, firstName, lastName, email, phone });
         await newUser.save();
         res.status(200).json({ message: "user added" });
